@@ -1,0 +1,8 @@
+rootProject.name = 'festivities-core'
+
+include "festivities-core-commons",
+		"festivities-core-entity",
+        "festivities-core-repository",
+        "festivities-core-service",       
+        "festivities-core-api",          
+        "festivities-core-starter"

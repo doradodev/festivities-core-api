@@ -1,0 +1,20 @@
+dependencies {
+    compile project(':festivities-core-entity')
+
+    compile group: 'org.springframework', name: 'spring-aspects', version: springVersion
+
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.3.11.Final'
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '2.4.7'
+    
+	compile group: 'com.h2database', name: 'h2', version: '1.4.191'
+       
+    
+}
+
+jar {
+    manifest {
+        attributes(
+            'Implementation-Title': 'Festivities - Core - Repository'
+        )
+    }
+}
