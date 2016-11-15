@@ -3,13 +3,17 @@
  */
 package com.prodigius.core.service.model.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
+import com.prodigius.core.commons.exception.CommonRuntimeException;
 import com.prodigius.core.entity.model.festivitie.Festivity;
 import com.prodigius.core.entity.model.festivitie.QFestivity;
 import com.prodigius.core.repository.model.FestivityRepository;
@@ -38,9 +42,17 @@ public class DefaultFestivityService implements FestivityService {
 	}
 
 	@Override
-	public Festivity findByid(Long id) {
+	public Optional<Festivity> findByid(Long id) {
+		checkNotNull(id, "The Festivity Id is a required argument!");
 
-		return repository.findOne(id);
+		try {
+
+			return Optional.ofNullable(repository.findOne(id));
+		} catch (Exception ex) {
+
+			throw new CommonRuntimeException("Error finding Festivity by Id [" + id + "]!", ex);
+		}
+
 	}
 
 	@Override
@@ -64,13 +76,13 @@ public class DefaultFestivityService implements FestivityService {
 
 	@Override
 	public List<Festivity> findByQuery(Festivity query) {
+		checkNotNull(query, "The Festivity Query is a required argument!");
+		try {
 
-		QFestivity festivities = QFestivity.festivity;
-		Predicate dateRange = null;
-		Predicate endDate = null;
-		Predicate startDate = null;
-
-		if (!query.getEnd().before(query.getStart())) {
+			QFestivity festivities = QFestivity.festivity;
+			Predicate dateRange = null;
+			Predicate endDate = null;
+			Predicate startDate = null;
 
 			if (query.getStart() != null && query.getEnd() == null) {
 
@@ -87,14 +99,19 @@ public class DefaultFestivityService implements FestivityService {
 				dateRange = addDateRange(festivities, query);
 
 			}
+
+			Predicate place = addPlace(festivities, query);
+			Predicate name = addName(festivities, query);
+
+			Predicate finalQuery = ExpressionUtils.allOf(name, startDate, endDate, place, dateRange);
+
+			return Lists.newArrayList(repository.findAll(finalQuery));
+
+		} catch (Exception ex) {
+
+			throw new CommonRuntimeException("Error getting Festivities by Query!", ex);
+
 		}
-
-		Predicate place = addPlace(festivities, query);
-		Predicate name = addName(festivities, query);
-
-		Predicate finalQuery = ExpressionUtils.allOf(name, startDate, endDate, place, dateRange);
-
-		return Lists.newArrayList(repository.findAll(finalQuery));
 	}
 
 	private Predicate addDateRange(QFestivity festivities, Festivity query) {
@@ -102,7 +119,7 @@ public class DefaultFestivityService implements FestivityService {
 		Predicate startDate = null;
 		Predicate endDate = null;
 
-		if (query.getStart() != null && query.getEnd() != null) {
+		if (!query.getEnd().before(query.getStart())) {
 
 			startDate = festivities.start.goe(query.getStart());
 			endDate = festivities.end.loe(query.getEnd());

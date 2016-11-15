@@ -8,6 +8,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -58,8 +59,8 @@ public class FestivityController {
 
 		return new ResponseEntity<>(service.findAll(), OK);
 	}
-	
-	@ApiOperation(value = "Get All festivities", notes = "Find all Festivities according to a query search parameters", response = Festivity.class, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+
+	@ApiOperation(value = "Get Query festivities", notes = "Find all Festivities according to a query search parameters", response = Festivity.class, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	@ApiResponses({ @ApiResponse(code = 200, message = "All Festivities according to a query search parameters"),
 			@ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 401, message = "Unauthorized Request"),
@@ -69,8 +70,8 @@ public class FestivityController {
 	@RequestMapping(value = "/findByQuery", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Festivity>> festivitiesQuery(
 			@ApiParam(value = "The Query object", required = true) @RequestBody(required = true) FestivitieQueryDTO query) {
-		Festivity festivity = Festivity.builder().name(query.getName()).place(query.getPlace())
-				.start(query.getStart()).end(query.getEnd()).build();
+		Festivity festivity = Festivity.builder().name(query.getName()).place(query.getPlace()).start(query.getStart())
+				.end(query.getEnd()).build();
 		return new ResponseEntity<>(service.findByQuery(festivity), OK);
 	}
 
@@ -85,11 +86,11 @@ public class FestivityController {
 	public ResponseEntity<Festivity> festivity(
 			@ApiParam(value = "The festivity Id", required = true) @PathVariable final String id) {
 		System.out.println("controller");
-		Festivity festivity = service.findByid(Long.parseLong(id));
+		Optional<Festivity> festivity = service.findByid(Long.parseLong(id));
 
-		if (festivity != null) {
+		if (festivity.isPresent()) {
 
-			return new ResponseEntity<>(festivity, OK);
+			return new ResponseEntity<>(festivity.get(), OK);
 		}
 
 		throw new EntityNotFoundException("Festivity with Id [" + id + "] was not found!");
@@ -104,7 +105,7 @@ public class FestivityController {
 
 	@RequestMapping(value = "/{id}", method = POST, produces = APPLICATION_JSON_VALUE)
 	public void insertFestivity(
-			@ApiParam(value = "The Afiliado Id", required = true) @RequestBody(required = true) FestivitieQueryDTO query) {
+			@ApiParam(value = "The Festivity Id", required = true) @RequestBody(required = true) FestivitieQueryDTO query) {
 		Festivity festivity = Festivity.builder().name(query.getName()).place(query.getPlace()).start(query.getStart())
 				.end(query.getEnd()).build();
 		service.save(festivity);
@@ -118,7 +119,7 @@ public class FestivityController {
 			@ApiResponse(code = 500, message = "Unexpected Internal Server Error") })
 
 	@RequestMapping(value = "/{id}", method = PUT, produces = APPLICATION_JSON_VALUE)
-	public void updateFestivity(@ApiParam(value = "The Afiliado Id", required = true) @PathVariable final String id,
+	public void updateFestivity(@ApiParam(value = "The Festivity Id", required = true) @PathVariable final String id,
 			@RequestBody(required = true) FestivitieQueryDTO query) {
 		Festivity festivity = Festivity.builder().id(Long.parseLong(id)).name(query.getName()).place(query.getPlace())
 				.start(query.getStart()).end(query.getEnd()).build();
@@ -134,7 +135,7 @@ public class FestivityController {
 			@ApiResponse(code = 500, message = "Unexpected Internal Server Error") })
 
 	@RequestMapping(value = "/{id}", method = DELETE, produces = APPLICATION_JSON_VALUE)
-	public void deleteFestivity(@ApiParam(value = "The Afiliado Id", required = true) @PathVariable final String id) {
+	public void deleteFestivity(@ApiParam(value = "The Festivity Id", required = true) @PathVariable final String id) {
 
 		service.delete(Long.parseLong(id));
 	}
