@@ -3,9 +3,7 @@
  */
 package com.prodigius.core.service.model;
 
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
+import java.util.List;
 
 import com.prodigius.core.entity.model.festivitie.Festivity;
 
@@ -15,14 +13,16 @@ import com.prodigius.core.entity.model.festivitie.Festivity;
  */
 public interface FestivityService {
 	
-	Page<Festivity> findAll();
+	List<Festivity> findAll();
 	
-	Optional<Festivity> findByid();
+	Festivity findByid(Long id);
 	
-	Festivity save(Festivity festivity);
+	void save(Festivity festivity);
 	 
-	Festivity update(Festivity festivity);
+	void update(Festivity festivity);
  
-    void delete(Integer id);
+    void delete(Long id);
+    
+    List<Festivity> findByQuery(Festivity festivity);
 
 }

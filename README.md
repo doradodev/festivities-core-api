@@ -1,18 +1,17 @@
 # festivities Core RESTful API
 
 [![engine](https://img.shields.io/badge/JDK-v1.8+-yellow.svg)]()
-[![gradle](https://img.shields.io/badge/gradle-v2.13-blue.svg)]()
+[![gradle](https://img.shields.io/badge/gradle-v2.13+-blue.svg)]()
 
 ---
 
-> `Festivities Core RESTful API` :wq
+> `Festivities Core RESTful API` 
 
 ---
 
 ## Sub-projects
 
 * [festivities-commons]()
-
 * [festivities-core-entity]()
 * [festivities-core-repository]()
 * [festivities-core-service]()
@@ -28,7 +27,7 @@ You will need the following things properly installed on your computer.
 
 ## Installation
 
-We use [Gradle](http://www.gradle.org), a cross-platform build automation tool that help with our full development flow. If you prefer [install Gradle](http://www.gradle.org/installation) or use a [Gradle wrapper](http://www.gradle.org/docs/current/userguide/gradle_wrapper.html) inside this project.
+I use [Gradle](http://www.gradle.org), a cross-platform build automation tool that help with our full development flow. If you prefer [install Gradle](http://www.gradle.org/installation) or use a [Gradle wrapper](http://www.gradle.org/docs/current/userguide/gradle_wrapper.html) inside this project.
 
 * `git clone https://github.com/doradodev/festivities-core-api.git` this repository
 * change into the new directory `Festivities-CORE-API`
@@ -49,11 +48,6 @@ festivities-core-starter-javadoc.jar
 festivities-core-starter-sources.jar
 ```
 
-### Run tests
-
-```bash
-./gradlew clean test
-```
 
 ### Generate Javadoc
 
@@ -84,18 +78,10 @@ festivities-core-starter.zip
 
 ### Database
 
-`festivities Core RESTful API` uses a [Oracle](https://www.oracle.com/database/index.html) database backend to store its data.
+`festivities Core RESTful API` uses a [H2](http://www.h2database.com/html/main.html) database embedded to store its data.
 
-The database configuration should be specified using environment variables while starting `Mutual-SER Core RESTful API`.
+The database configuration starts while starting `Festivities Core RESTful API`.
 
-Take a look on  `.env` example file:
-
-```bash
-cat .env 
-
-ORACLE_PORT=1521
-ORACLE_WEB_PORT=1522
-```
 
 ## Run
 
@@ -106,15 +92,11 @@ To override default gradle config, please take a look on run task on  [core/fest
 ```bash
 tail -n 20 festivities-core-starter/build.gradle
 
-run {
-    environment 'ORG_FESTIVITIES_CORE_REPOSITORY_URL', 'jdbc:oracle:thin:@//localhost:1521/XE'
-    environment 'ORG_FESTIVITIES_CORE_REPOSITORY_USERNAME', 'system'
-    environment 'ORG_FESTIVITIES_CORE_REPOSITORY_PASSWORD', 'oracle'
-    environment 'ORG_FESTIVITIES_CORE_REPOSITORY_INIT', 'false'
+run {   
     
-    environment 'ORG_festivities_API_PORT', '8080'
+    environment 'COM_PRODIGIUS_API_PORT', '8080'
 
-    environment 'ORG_festivities_ENV', 'DEV'
+    environment 'COM_PRODIGIUS_ENV', 'DEV'
 }
 ```
 
