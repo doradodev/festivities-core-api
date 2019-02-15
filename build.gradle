@@ -173,7 +173,6 @@ jacoco {
 }
 
 }
-apply plugin: 'org.sonarqube'
 
 buildscript {
     repositories {

@@ -1,8 +1,8 @@
-rootProject.name = 'festivities-core'
+rootProject.name = 'imdb-core'
 
-include "festivities-core-commons",
-		"festivities-core-entity",
-        "festivities-core-repository",
-        "festivities-core-service",       
-        "festivities-core-api",          
-        "festivities-core-starter"
+include "imdb-core-commons",
+		"imdb-core-entity",
+        "imdb-core-repository",
+        "imdb-core-service",       
+        "imdb-core-api",          
+        "imdb-core-starter"

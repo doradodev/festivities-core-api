@@ -1,0 +1,24 @@
+apply plugin: 'application'
+
+mainClassName = 'com.lunatech.App'
+
+dependencies {
+    compile project(':imdb-core-api')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
+}
+
+jar {
+    manifest {
+        attributes(
+            'Implementation-Title': 'imdb - Core - Starter',
+            'Main-Class': mainClassName
+        )
+    }
+}
+
+run {
+        
+    environment 'COM_LUNATECH_API_PORT', '8081'
+    environment 'COM_LUNATECH_ENV', 'DEV'
+}
